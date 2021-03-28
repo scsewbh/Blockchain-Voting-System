@@ -1,4 +1,15 @@
+from time import time
 import hashlib
+
+
+class Block():
+
+    def __init__(self, data, previous_hash):
+        self.timestamp = time(),
+        self.data = data
+        self.previous_hash = previous_hash
+        self.hash = hashlib.sha256(previous_hash.encode()).hexdigest()
+
 
 str1 = "abcde"
 
@@ -18,10 +29,12 @@ print(result2.hexdigest())
 print(result3.hexdigest())
 print(result4.hexdigest())
 
-
 for i in range(0, 1000000):
     testString = str(i)
     r = hashlib.sha256(testString.encode())
     r = r.hexdigest()
     if r[0] == "0" and r[1] == "0" and r[2] == "0":
-        print("found an input of " + str(i))
+        nonce = i
+        break
+
+print("Found an input of " + str(nonce))
