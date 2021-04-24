@@ -1,12 +1,13 @@
 import hashlib
 from Data import *
+from time import time
 
 
 class Block:
     def __init__(self, id, fname, lname, age, email, vote, previous_hash):
 
         self.data = Data(id, fname, lname, age, email, vote)
-
+        self.timestamp = time()
         self.previous_hash = previous_hash
         h = str(self.data.id) + self.data.fname + self.data.lname + str(self.data.age) + self.data.email + self.data.vote + self.previous_hash
 

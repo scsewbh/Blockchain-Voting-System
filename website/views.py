@@ -9,6 +9,7 @@ import os
 views = Blueprint('views', __name__)
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = 'website\static\secret\BCVS_service_account.json'
 client = datastore.Client()
+client_mempool = datastore.Client()
 
 @views.route('/', methods = ['GET', 'POST'])
 def vote():
@@ -19,8 +20,20 @@ def vote():
             'GID': session['userid']
         })
         client.put(entity)
+        choice = findChecked(request.form)
+        print(request.form)
+        if choice == 'Other':
+            choice = request.form.get('other_text')
+        data = {"vote": [choice], "user": [session['userid'], session['fname'], session['lname'], session['email'], request.form["age"]]}
+        key = client_mempool.key('mempool')
+        entity = datastore.Entity(key=key)
+        entity.update({
+            'Data': data,
+            'Fee': 0,
+            'workedOn': False
+        })
+        client.put(entity)
         print(session['userid'])
-        #ANOTHER PUSH TO MEME POOL WITH DATA
         return redirect(url_for('views.results'))
     else:
         print(session)
@@ -45,3 +58,13 @@ def results():
         return render_template('voted.html', userid=session['userid'])
     else:
         return redirect(url_for('auth.login')) #ERROR or SIGN IN FIRST
+
+def findChecked(data):
+    if data.get('eric'):
+        return 'Eric C.'
+    elif data.get('mike'):
+        return 'Mike S.'
+    elif data.get('sanjay'):
+        return 'Sanjay S.'
+    else:
+        return 'Other'

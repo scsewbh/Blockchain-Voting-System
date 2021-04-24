@@ -1,10 +1,7 @@
-from time import time
 
 
 class Data:
     def __init__(self, id, fname, lname, age, email, vote):
-
-        self.timestamp = time()
 
         self.id = id
         self.fname = fname
