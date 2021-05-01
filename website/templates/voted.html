@@ -26,13 +26,8 @@
                             </div>
                             <div class="card shadow mb-4">
                                 <div class="card-body">
-                                    <p class="m-0" style="padding: 0px;">WORDS ABOUT GRAPH TO GIVE CONTENCXT&nbsp;</p>
-                                    <div class="chart-area">
-                                        <canvas data-bs-chart="{&quot;type&quot;:&quot;bar&quot;,&quot;data&quot;:{&quot;labels&quot;:[
-                                            &quot;January&quot;,&quot;February&quot;,&quot;March&quot;
-                                            ],&quot;datasets&quot;:[{&quot;label&quot;:&quot;Votes&quot;,&quot;backgroundColor&quot;:&quot;#4e73df&quot;,&quot;borderColor&quot;:&quot;#4e73df&quot;,&quot;data&quot;:[
-                                            &quot;45&quot;,&quot;10&quot;,&quot;345&quot;
-                                            ]}]},&quot;options&quot;:{&quot;maintainAspectRatio&quot;:false,&quot;legend&quot;:{&quot;display&quot;:false,&quot;reverse&quot;:false,&quot;position&quot;:&quot;top&quot;},&quot;title&quot;:{&quot;display&quot;:false},&quot;scales&quot;:{&quot;xAxes&quot;:[{&quot;gridLines&quot;:{&quot;color&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;zeroLineColor&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;drawBorder&quot;:false,&quot;drawTicks&quot;:false,&quot;borderDash&quot;:[&quot;2&quot;],&quot;zeroLineBorderDash&quot;:[&quot;2&quot;],&quot;drawOnChartArea&quot;:false},&quot;ticks&quot;:{&quot;fontColor&quot;:&quot;#858796&quot;,&quot;beginAtZero&quot;:true,&quot;padding&quot;:21}}],&quot;yAxes&quot;:[{&quot;gridLines&quot;:{&quot;color&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;zeroLineColor&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;drawBorder&quot;:false,&quot;drawTicks&quot;:false,&quot;borderDash&quot;:[&quot;2&quot;],&quot;zeroLineBorderDash&quot;:[&quot;2&quot;]},&quot;ticks&quot;:{&quot;fontColor&quot;:&quot;#858796&quot;,&quot;beginAtZero&quot;:true,&quot;padding&quot;:21}}]}}}"></canvas>
+                                    <div class="chart-area" id="chart_div">
+
                                     </div>
                                 </div>
                             </div>
@@ -42,9 +37,68 @@
             </div>
         </div>
     </div>
-    <script src="../static/js/jquery.min.js"></script>
+    <div class="container" style="margin-bottom: 100px;">
+        <div class="card shadow mb-4" style="max-height: 1000px;">
+            <div class="card-header py-3">
+                <h6 class="text-primary m-0 font-weight-bold">Blockchain</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive table mt-2" id="dataTable-1" role="grid" aria-describedby="dataTable_info">
+                    <table class="table my-0" id="dataTable">
+                        <thead>
+                            <tr>
+                                <th style="width: 120px;text-align: center;">Block Number</th>
+                                <th style="width: 340px;">Hash</th>
+                                <th style="width: 340px;">Previous Hash</th>
+                                <th style="width: 85px;text-align: center;">Fee</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for entry in blockchain_data %}
+                                <tr>
+                                    <td style="text-align: center;">{{ entry[0] }}</td>
+                                    <td class="text-truncate" style="max-width: 340px;">{{ entry[1] }}</td>
+                                    <td class="text-truncate" style="max-width: 340px;">{{ entry[2] }}</td>
+                                    <td style="text-align: center;">${{ entry[3] }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr></tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="../static/bootstrap/js/bootstrap.min.js"></script>
-    <script src="../static/js/chart.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+        google.charts.load('current', {packages: ['corechart', 'bar']});
+        google.charts.setOnLoadCallback(drawBasic);
+
+        function drawBasic() {
+              var data = google.visualization.arrayToDataTable({{chart_data|safe}});
+              var options = {
+                animation:{
+                  duration: 1000,
+                  easing: 'out',
+                  startup: true
+                },
+                chartArea: {width: '65%'},
+                hAxis: {
+                  title: 'Votes',
+                  minValue: 0
+                }
+              };
+
+              var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+
+              chart.draw(data, options);
+        }
+
+    </script>
     <script src="../static/js/bs-init.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
     <script src="../static/js/theme.js"></script>

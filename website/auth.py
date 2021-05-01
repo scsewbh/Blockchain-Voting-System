@@ -4,7 +4,7 @@ from oauth2client import client
 from google.cloud import datastore
 import os
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = 'website\static\secret\BCVS_service_account.json'
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = 'website/static/secret/BCVS_service_account.json'
 #Blueprints are use to organize the different pages on a web app.
 #The blueprint is connected in the setup of the init.py file
 
@@ -35,9 +35,6 @@ def login_callback():
             ['profile', 'email'],
             auth_code)
         print(credentials.id_token)
-        if 'hd' not in credentials.id_token or credentials.id_token['hd'] != 'manhattan.edu':
-            return json.dumps({'success': False}), 403, {'ContentType': 'application/json'} #NOT MANHATTAN COLLEGE GMAIL
-        print('manhattan email passed')
 
         # Get profile info from ID token
         session['authenticated'] = True

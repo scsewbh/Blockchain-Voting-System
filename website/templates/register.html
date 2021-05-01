@@ -35,9 +35,10 @@
                                     <div class="col-auto col-sm-6" style="max-width: 25%;"><input class="form-control form-control-user" type="text" id="exampleAge" placeholder="Age" name="age" inputmode="numeric" required="" maxlength="3"></div>
                                 </div>
                                 <fieldset style="margin-top: 25px;">
-                                    <div class="custom-control custom-radio"><input type="radio" id="eric" class="custom-control-input" name="eric"/><label class="custom-control-label" for="eric">Eric C.</label></div>
-                                    <div style="margin-top: 5px;" class="custom-control custom-radio"><input type="radio" id="mike" class="custom-control-input" name="mike"/><label class="custom-control-label" for="mike">Michael S.</label></div>
-                                    <div style="margin-top: 5px;" class="custom-control custom-radio"><input type="radio" id="sanjay" class="custom-control-input" name="sanjay"/><label class="custom-control-label" for="sanjay">Sanjay S.</label></div>
+                                    {% for candidate in candidates %}
+                                        {% set candidate_id = candidate | replace(" ","_") %}
+                                        <div style="margin-top: 5px;" class="custom-control custom-radio"><input type="radio" id="{{candidate_id}}" class="custom-control-input" name="{{candidate_id}}"/><label class="custom-control-label" for="{{candidate_id}}">{{candidate}}</label></div>
+                                    {% endfor %}
                                     <div style="margin-top: 10px;" class="form-row">
                                         <div style="margin-left: 5px;" class="custom-control custom-radio"><input type="radio" id="other" class="custom-control-input" name="other"/><label class="custom-control-label" for="other">Other:</label></div>
                                         <div class="col"><input class="form-control" type="text" style="height: 24px;font-size: 12.8px;text-align: left;max-width: 30%;" name="other_text"></div>
@@ -51,7 +52,7 @@
             </div>
         </div>
     </div>
-    <script src="../static/js/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="../static/bootstrap/js/bootstrap.min.js"></script>
     <script src="../static/js/chart.min.js"></script>
     <script src="../static/js/bs-init.js"></script>
