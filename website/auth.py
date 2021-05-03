@@ -44,7 +44,7 @@ def login_callback():
     try:
         session['lname'] = credentials.id_token['family_name']
     except KeyError:
-        session['lname'] = ""
+        session['lname'] = " "
     session['email'] = credentials.id_token['email']
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 
