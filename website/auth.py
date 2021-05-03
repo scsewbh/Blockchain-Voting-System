@@ -20,6 +20,7 @@ def login():
         print('onlogin')
         return render_template('login.html')
 
+
 @auth.route('/login/callback', methods = ['POST'])
 def login_callback():
     if not request.headers.get('X-Requested-With'):
@@ -40,7 +41,10 @@ def login_callback():
     session['authenticated'] = True
     session['userid'] = credentials.id_token['sub']
     session['fname'] = credentials.id_token['given_name']
-    session['lname'] = credentials.id_token['family_name']
+    try:
+        session['lname'] = credentials.id_token['family_name']
+    except KeyError:
+        session['lname'] = ""
     session['email'] = credentials.id_token['email']
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 
